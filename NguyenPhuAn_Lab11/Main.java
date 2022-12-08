@@ -1,6 +1,3 @@
-import java.io.PrintStream;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -8,10 +5,10 @@ import entity.Certification;
 import entity.Employee;
 import entity.Fly;
 import entity.Plane;
-import service.CertificateService;
-import service.EmployeeService;
-import service.FlyService;
-import service.PlaneService;
+import repository.CertificateRepository;
+import repository.EmployeeRepository;
+import repository.FlyRepository;
+import repository.PlaneRepository;
 
     public class Main {
         public Main() {
@@ -23,13 +20,14 @@ import service.PlaneService;
                 int choice;
                 do {
                     System.out.println("---------------------MENU--------------------");
-                    System.out.println("1. Xem danh sách nhân viên\n2. Xem danh sách chuyến bay\n3. Xem danh sách chứng nhận\n4. Xem danh sách máy bay\n5. Thêm mới nhân viên\n6. Thoát\n0. Một số chức năng yêu cầu");
+                    System.out.println("1. Xem danh sách nhân viên\n2. Xem danh sách chuyến bay\n3. Xem danh sách chứng nhận\n" +
+                            "4. Xem danh sách máy bay\n5. Thêm mới nhân viên\n6. Thoát\n0. Một số chức năng yêu cầu");
                     System.out.print("Enter choice: ");
                     choice = scanner.nextInt();
-                    EmployeeService employeeService;
-                    FlyService flyService;
-                    PlaneService planeService;
-                    CertificateService certificateService;
+                    EmployeeRepository employeeRepository;
+                    FlyRepository flyRepository;
+                    PlaneRepository planeRepository;
+                    CertificateRepository certificateRepository;
                     switch (choice) {
                         case 0: {
                             int sub;
@@ -53,8 +51,8 @@ import service.PlaneService;
                                 sub = scanner.nextInt();
                                 switch (sub) {
                                     case 1: {
-                                        flyService = new FlyService();
-                                        List<Fly> flies = flyService.getFly();
+                                        flyRepository = new FlyRepository();
+                                        List<Fly> flies = flyRepository.getFlyByDAD();
                                         flies.stream().forEach(e -> System.out.println("-MaCB: " + e.getFlyCode()
                                                 + " -Ga di: " + e.getGaDi() + " -Ga den: " + e.getGaDen() + " -Gio di: "
                                                 + e.getGioDi() + " -Gio den: " + e.getGioDen() + " -Do dai: " + e.getDoDai()
@@ -62,22 +60,22 @@ import service.PlaneService;
                                         break;
                                     }
                                     case 2: {
-                                        planeService = new PlaneService();
-                                        List<Plane> planes = planeService.getPalne();
+                                        planeRepository = new PlaneRepository();
+                                        List<Plane> planes = planeRepository.getPlaneByTamBay10000();
                                         planes.stream().forEach((e) -> System.out.println("-MaMB: " + e.getPlaneCode() + " -TamBay: " + e.getFlight()
                                                 + " -Loai: " + e.getType()));
                                         break;
                                     }
                                     case 3: {
-                                        employeeService = new EmployeeService();
-                                        List<Employee> employee = employeeService.getEmployee();
+                                        employeeRepository = new EmployeeRepository();
+                                        List<Employee> employee = employeeRepository.getEmployeeSalary10000();
                                         employee.stream().forEach((e) -> System.out.println("-MaNV: " + e.getEmpCode() + " -Ten: "
                                                 + e.getName() + " -Luong: " + e.getSalary()));
                                         break;
                                     }
                                     case 4: {
-                                        flyService = new FlyService();
-                                        List<Fly> flies = flyService.getFlyDoDai();
+                                        flyRepository = new FlyRepository();
+                                        List<Fly> flies = flyRepository.getFlyByDoDai();
                                         flies.stream().forEach(e -> System.out.println("-MaCB: " + e.getFlyCode()
                                                 + " -Ga di: " + e.getGaDi() + " -Ga den: " + e.getGaDen() + " -Gio di: "
                                                 + e.getGioDi() + " -Gio den: " + e.getGioDen() + " -Do dai: " + e.getDoDai()
@@ -85,8 +83,8 @@ import service.PlaneService;
                                         break;
                                     }
                                     case 5: {
-                                        flyService = new FlyService();
-                                        List<Fly> flies = flyService.getFlys();
+                                        flyRepository = new FlyRepository();
+                                        List<Fly> flies = flyRepository.getFlyToGaDiFromGaDen();
                                         flies.stream().forEach(e -> System.out.println("-MaCB: " + e.getFlyCode()
                                                 + " -Ga di: " + e.getGaDi() + " -Ga den: " + e.getGaDen() + " -Gio di: "
                                                 + e.getGioDi() + " -Gio den: " + e.getGioDen() + " -Do dai: " + e.getDoDai()
@@ -94,8 +92,8 @@ import service.PlaneService;
                                         break;
                                     }
                                     case 6: {
-                                        flyService = new FlyService();
-                                        List<Fly> flies = flyService.getFlySGN();
+                                        flyRepository = new FlyRepository();
+                                        List<Fly> flies = flyRepository.getFlyBySGN();
                                         flies.stream().forEach(e -> System.out.println("-MaCB: " + e.getFlyCode()
                                                 + " -Ga di: " + e.getGaDi() + " -Ga den: " + e.getGaDen() + " -Gio di: "
                                                 + e.getGioDi() + " -Gio den: " + e.getGioDen() + " -Do dai: " + e.getDoDai()
@@ -103,55 +101,55 @@ import service.PlaneService;
                                         break;
                                     }
                                     case 7: {
-                                        planeService = new PlaneService();
-                                        List<Plane> planes = planeService.getPalneType();
+                                        planeRepository = new PlaneRepository();
+                                        List<Plane> planes = planeRepository.getPlaneOfType();
                                         planes.stream().forEach((e) -> System.out.println("-MaMB: " + e.getPlaneCode() + " -TamBay: " + e.getFlight()
                                                 + " -Loai: " + e.getType()));
                                         break;
                                     }
                                     case 8: {
-                                        employeeService = new EmployeeService();
-                                        System.out.println("Sum: " + employeeService.getSumSalary());
+                                        employeeRepository = new EmployeeRepository();
+                                        System.out.println("Sum: " + employeeRepository.getSumSalary());
                                         break;
                                     }
                                     case 9: {
-                                        certificateService = new CertificateService();
-                                        List<Certification> certifications = certificateService.getCertificateNV();
+                                        certificateRepository = new CertificateRepository();
+                                        List<Certification> certifications = certificateRepository.getCertificateNV();
                                         certifications.stream().forEach((e) -> System.out.println("-MaNV: "
                                                 + e.getEmpCode() + " -MaMB: " + e.getPlaneCode()));
                                         break;
                                     }
                                     case 10: {
-                                        employeeService = new EmployeeService();
-                                        List<Employee> employee = employeeService.getEmployee747();
+                                        employeeRepository = new EmployeeRepository();
+                                        List<Employee> employee = employeeRepository.getEmployeePlaneCode747();
                                         employee.stream().forEach((e) -> System.out.println("-MaNV: " + e.getEmpCode() + " -Ten: "
                                                 + e.getName() + " -Luong: " + e.getSalary()));
                                         break;
                                     }
                                     case 11: {
-                                        certificateService = new CertificateService();
-                                        List<Certification> certifications = certificateService.getCertificateNguyen();
+                                        certificateRepository = new CertificateRepository();
+                                        List<Certification> certifications = certificateRepository.getCertificateOfNguyen();
                                         certifications.stream().forEach((e) -> System.out.println("-MaNV: "
                                                 + e.getEmpCode() + " -MaMB: " + e.getPlaneCode()));
                                         break;
                                     }
                                     case 12: {
-                                        certificateService = new CertificateService();
-                                        List<Certification> certifications = certificateService.getCertificateNVs();
+                                        certificateRepository = new CertificateRepository();
+                                        List<Certification> certifications = certificateRepository.getCertificateNVs();
                                         certifications.stream().forEach((e) -> System.out.println("-MaNV: "
                                                 + e.getEmpCode() + " -MaMB: " + e.getPlaneCode()));
                                         break;
                                     }
                                     case 13: {
-                                        planeService = new PlaneService();
-                                        List<Plane> planes = planeService.getPalneVN280();
+                                        planeRepository = new PlaneRepository();
+                                        List<Plane> planes = planeRepository.getPlaneByVN280();
                                         planes.stream().forEach((e) -> System.out.println("-MaMB: " + e.getPlaneCode() + " -TamBay: " + e.getFlight()
                                                 + " -Loai: " + e.getType()));
                                         break;
                                     }
                                     case 14: {
-                                        flyService = new FlyService();
-                                        List<Fly> flies = flyService.getFlyAirbus();
+                                        flyRepository = new FlyRepository();
+                                        List<Fly> flies = flyRepository.getFlyByAirbusA320();
                                         flies.stream().forEach(e -> System.out.println("-MaCB: " + e.getFlyCode()
                                                 + " -Ga di: " + e.getGaDi() + " -Ga den: " + e.getGaDen() + " -Gio di: "
                                                 + e.getGioDi() + " -Gio den: " + e.getGioDen() + " -Do dai: " + e.getDoDai()
@@ -159,8 +157,8 @@ import service.PlaneService;
                                         break;
                                     }
                                     case 15: {
-                                        employeeService = new EmployeeService();
-                                        List<Employee> employee = employeeService.getEmployeeBoeing();
+                                        employeeRepository = new EmployeeRepository();
+                                        List<Employee> employee = employeeRepository.getEmployeeBoeing();
                                         employee.stream().forEach((e) -> System.out.println("-MaNV: " + e.getEmpCode() + " -Ten: "
                                                 + e.getName() + " -Luong: " + e.getSalary()));
                                         break;
@@ -173,15 +171,15 @@ import service.PlaneService;
                             break;
                         }
                         case 1:{
-                            employeeService = new EmployeeService();
-                            List<Employee> employee = employeeService.getAllEmployee();
+                            employeeRepository = new EmployeeRepository();
+                            List<Employee> employee = employeeRepository.getAllEmployee();
                             employee.stream().forEach((e) -> System.out.println("-MaNV: " + e.getEmpCode() + " -Ten: "
                                     + e.getName() + " -Luong: " + e.getSalary()));
                             break;
                             }
                         case 2: {
-                            flyService = new FlyService();
-                            List<Fly> flies = flyService.getAllFly();
+                            flyRepository = new FlyRepository();
+                            List<Fly> flies = flyRepository.getAllFly();
                             flies.stream().forEach(e -> System.out.println("-MaCB: " + e.getFlyCode()
                                     + " -Ga di: " + e.getGaDi() + " -Ga den: " + e.getGaDen() + " -Gio di: "
                                     + e.getGioDi() + " -Gio den: " + e.getGioDen() + " -Do dai: " + e.getDoDai()
@@ -189,21 +187,21 @@ import service.PlaneService;
                             break;
                         }
                         case 3: {
-                            certificateService = new CertificateService();
-                            List<Certification> certifications = certificateService.getAllCertificate();
+                            certificateRepository = new CertificateRepository();
+                            List<Certification> certifications = certificateRepository.getAllCertificate();
                             certifications.stream().forEach((e) -> System.out.println("-MaNV: "
                                     + e.getEmpCode() + " -MaMB: " + e.getPlaneCode()));
                             break;
                         }
                         case 4: {
-                            planeService = new PlaneService();
-                            List<Plane> planes = planeService.getAllPalne();
+                            planeRepository = new PlaneRepository();
+                            List<Plane> planes = planeRepository.getAllPlane();
                             planes.stream().forEach((e) -> System.out.println("-MaMB: " + e.getPlaneCode() + " -TamBay: " + e.getFlight()
                                     + " -Loai: " + e.getType()));
                             break;
                         }
                         case 5: {
-                            employeeService = new EmployeeService();
+                            employeeRepository = new EmployeeRepository();
                             scanner.nextLine();
                             System.out.print("Code: ");
                             String empCode = scanner.nextLine();
@@ -211,7 +209,7 @@ import service.PlaneService;
                             String name = scanner.nextLine();
                             System.out.print("Salary: ");
                             int salary = scanner.nextInt();
-                            employeeService.setEmployee(empCode, name, salary);
+                            employeeRepository.setEmployee(empCode, name, salary);
                             break;
                         }
                         case 6:
