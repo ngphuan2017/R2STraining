@@ -46,7 +46,21 @@ import repository.PlaneRepository;
                                         "12. Cho biết mã số của các phi công vừa lái được Boeing vừa lái được Airbus\n" +
                                         "13. Cho biết các loại máy bay có thể thực hiện chuyến bay VN280\n" +
                                         "14. Cho biết các chuyến bay có thể ñược thực hiện bởi máy bay Airbus A320\n" +
-                                        "15. Cho biết tên của các phi công lái máy bay Boeing\n16. Trở lại");
+                                        "15. Cho biết tên của các phi công lái máy bay Boeing\n"+
+                                        "16. Với mỗi loại máy bay có phi công lái cho biết mã số, loại máy báy và tổng số phi công có thể lái loại máy bay đó\n"+
+                                        "17. Giả sử một hành khách muốn đi thẳng từ ga A đến ga B rồi quay trở về ga A. Cho biết các đường bay nào có thể đáp ứng yêu cầu này\n"+
+                                        "18. Với mỗi ga có chuyến bay xuất phát từ đó cho biết có bao nhiêu chuyến bay khởi hành từ ga đó\n"+
+                                        "19. Với mỗi ga có chuyến bay xuất phát từ đó cho biết tổng chi phí phải trả cho phi công lái các chuyến bay khởi hành từ ga đó\n"+
+                                        "20. Cho biết danh sách các chuyến bay có thể khởi hành trước 12:00\n"+
+                                        "21. Với mỗi địa điểm xuất phát cho biết có bao nhiêu chuyến bay có thể khởi hành trước 12:00\n"+
+                                        "22. Cho biết mã số của các phi công chỉ lái được 3 loại máy bay\n"+
+                                        "23. Với mỗi phi công có thể lái nhiều hơn 3 loại máy bay, cho biết mã số phi công và tầm bay lớn nhất của các loại máy bay mà phi công đó có thể lái\n"+
+                                        "24. Với mỗi phi công cho biết mã số phi công và tổng số loại máy bay mà phi công đó có thể lái\n"+
+                                        "25. Tìm các nhân viên không phải là phi công\n"+
+                                        "26. Cho biết mã số của các nhân viên có lương cao nhất\n"+
+                                        "27. Cho biết tổng số lương phải trả cho các phi công\n"+
+                                        "28. Tìm các chuyến bay có thể được thực hiện bởi tất cả các loại máy bay Boeing\n"+
+                                        "0. Trở lại\n");
                                 System.out.print("Enter :");
                                 sub = scanner.nextInt();
                                 switch (sub) {
@@ -164,10 +178,104 @@ import repository.PlaneRepository;
                                         break;
                                     }
                                     case 16: {
+                                        planeRepository = new PlaneRepository();
+                                        List<Plane> planes = planeRepository.getPlaneSumEmployee();
+                                        planes.stream().forEach((e) -> System.out.println("-MaMB: " + e.getPlaneCode() + " -Loai: " + e.getType()
+                                                +" -Sum(Employee): "+e.getFlight()));
+                                        break;
+                                    }
+                                    case 17:{
+                                        flyRepository = new FlyRepository();
+                                        List<Fly> flies = flyRepository.getFlyComeBackA();
+                                        flies.stream().forEach(e -> System.out.println("-MaCB: " + e.getFlyCode()
+                                                + " -Ga di: " + e.getGaDi() + " -Ga den: " + e.getGaDen() + " -Gio di: "
+                                                + e.getGioDi() + " -Gio den: " + e.getGioDen() + " -Do dai: " + e.getDoDai()
+                                                + " -Chi phi: " + e.getChiPhi()));
+                                        break;
+                                    }
+                                    case 18:{
+                                        flyRepository = new FlyRepository();
+                                        List<Fly> flies = flyRepository.getFlySumGaDi();
+                                        flies.stream().forEach(e -> System.out.println(" -Ga di: " + e.getGaDi()
+                                                + " -So chuyen bay: " + e.getDoDai()));
+                                        break;
+                                    }
+                                    case 19:{
+                                        flyRepository = new FlyRepository();
+                                        List<Fly> flies = flyRepository.getFlySumChiPhi();
+                                        flies.stream().forEach(e -> System.out.println(" -Ga di: " + e.getGaDi()
+                                                + " -Tong chi phi: " + e.getDoDai()));
+                                        break;
+                                    }
+                                    case 20:{
+                                        flyRepository = new FlyRepository();
+                                        List<Fly> flies = flyRepository.getFlyBy12h();
+                                        flies.stream().forEach(e -> System.out.println("-MaCB: " + e.getFlyCode()
+                                                + " -Ga di: " + e.getGaDi() + " -Ga den: " + e.getGaDen() + " -Gio di: "
+                                                + e.getGioDi() + " -Gio den: " + e.getGioDen() + " -Do dai: " + e.getDoDai()
+                                                + " -Chi phi: " + e.getChiPhi()));
+                                        break;
+                                    }
+                                    case 21:{
+                                        flyRepository = new FlyRepository();
+                                        List<Fly> flies = flyRepository.getFlyByGaDi12h();
+                                        flies.stream().forEach(e -> System.out.println(" -Ga di: " + e.getGaDi()
+                                                + " -Tong chuyen bay truoc 12h: " + e.getDoDai()));
+                                        break;
+                                    }
+                                    case 22:{
+                                        certificateRepository = new CertificateRepository();
+                                        List<Certification> certifications = certificateRepository.getCertificateOf3PlaneType();
+                                        certifications.stream().forEach((e) -> System.out.println("-MaNV: "+ e.getEmpCode()));
+                                        break;
+                                    }
+                                    case 23:{
+                                        certificateRepository = new CertificateRepository();
+                                        List<Certification> certifications = certificateRepository.getCertificateMoreThan3PlaneType();
+                                        certifications.stream().forEach((e) -> System.out.println("-MaNV: "
+                                                + e.getEmpCode() + " -Max(TamBay): " + e.getPlaneCode()));
+                                        break;
+                                    }
+                                    case 24:{
+                                        certificateRepository = new CertificateRepository();
+                                        List<Certification> certifications = certificateRepository.getCertificateAllPlaneType();
+                                        certifications.stream().forEach((e) -> System.out.println("-MaNV: "
+                                                + e.getEmpCode() + " -Count(Loai): " + e.getPlaneCode()));
+                                        break;
+                                    }
+                                    case 25:{
+                                        employeeRepository = new EmployeeRepository();
+                                        List<Employee> employee = employeeRepository.getEmployeeNotPilot();
+                                        employee.stream().forEach((e) -> System.out.println("-MaNV: " + e.getEmpCode() + " -Ten: "
+                                                + e.getName() + " -Luong: " + e.getSalary()));
+                                        break;
+                                    }
+                                    case 26:{
+                                        employeeRepository = new EmployeeRepository();
+                                        List<Employee> employee = employeeRepository.getEmployeeMaxSalary();
+                                        employee.stream().forEach((e) -> System.out.println("-MaNV: " + e.getEmpCode() + " -Ten: "
+                                                + e.getName() + " -Luong: " + e.getSalary()));
+                                        break;
+                                    }
+                                    case 27:{
+                                        employeeRepository = new EmployeeRepository();
+                                        System.out.println("Sum: " + employeeRepository.getEmployeeSumSalaryIsPilot());
+                                        break;
+                                    }
+                                    case 28:{
+                                        flyRepository = new FlyRepository();
+                                        List<Fly> flies = flyRepository.getFlyByAllBoeing();
+                                        flies.stream().forEach(e -> System.out.println("-MaCB: " + e.getFlyCode()
+                                                + " -Ga di: " + e.getGaDi() + " -Ga den: " + e.getGaDen() + " -Gio di: "
+                                                + e.getGioDi() + " -Gio den: " + e.getGioDen() + " -Do dai: " + e.getDoDai()
+                                                + " -Chi phi: " + e.getChiPhi()));
+                                        break;
+                                    }
+                                    case 0:{
                                         break;
                                     }
                                 }
-                            } while (sub != 16);
+                            } while (sub != 0);
                             break;
                         }
                         case 1:{
